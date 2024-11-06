@@ -1,55 +1,198 @@
 "use client";
 
-export default function App() {
-  // Gérer l'état du formulaire avec useState puis refacto avec useReducer
+import { useReducer } from "react";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const initialFormData = {
+  name: "",
+  email: "",
+  address: "",
+  city: "",
+  zipcode: "",
+};
+
+const reducer = (state, { action, key, value }) => {
+  switch (action) {
+    case "nextStep":
+      return { ...state, step: state.step + 1 };
+    case "previousStep":
+      return { ...state, step: state.step - 1 };
+    case "handleChange":
+      return { ...state, [key]: value };
+    default:
+      alert("action not handled");
+      break;
+  }
+};
+
+export default function MultiStepForm() {
+  const [form, dispatch] = useReducer(reducer, { ...initialFormData, step: 1 });
+
+  const handleSubmit = () => {
+    alert("Thank you for your submission");
   };
 
-  return (
-    <div>
-      <h1>Formulaire d'inscription</h1>
+  if (form.step === 1) {
+    return (
       <form onSubmit={handleSubmit}>
+        <h2>Personal Information</h2>
+        <div>
+          <label>Step {form.step} of 3</label>
+          <progress value={form.step} max={3} />
+        </div>
         <div>
           <label htmlFor="name">Name</label>
           <input
-            id="name"
+            required
             name="name"
-            type="text"
-            onChange={(e) => {}}
-            value=""
-            required
-            placeholder="Your name"
+            id="name"
+            placeholder="Enter your name"
+            value={form.name}
+            onChange={(e) =>
+              dispatch({
+                action: "handleChange",
+                key: "name",
+                value: e.target.value,
+              })
+            }
           />
-          <label htmlFor="email-address">Email address</label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            onChange={(e) => {}}
-            value=""
-            autoComplete="email"
-            required
-            placeholder="Email Address"
-          />
-          <button type="submit">Submit</button>
         </div>
         <div>
-          <label htmlFor="cgu">CGU</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="cgu"
-            name="cgu"
-            type="checkbox"
-            onChange={(e) => {}}
-            checked={false}
+            required
+            name="email"
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={(e) =>
+              dispatch({
+                action: "handleChange",
+                key: "email",
+                value: e.target.value,
+              })
+            }
           />
-          <p>I agree to everything.</p>
+        </div>
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => dispatch({ action: "nextStep" })}
+        >
+          Next
+        </button>
+      </form>
+    );
+  } else if (form.step === 2) {
+    return (
+      <form onSubmit={handleSubmit}>
+        <h2>Address</h2>
+        <div>
+          <label>Step {form.step} of 3</label>
+          <progress value={form.step} max={3} />
+        </div>
+        <div>
+          <label htmlFor="address">Address</label>
+          <input
+            required
+            name="address"
+            id="address"
+            type="address"
+            placeholder="What is your address?"
+            value={form.address}
+            onChange={(e) =>
+              dispatch({
+                action: "handleChange",
+                key: "address",
+                value: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="city">City</label>
+          <input
+            required
+            name="city"
+            id="city"
+            placeholder="What city do you live in?"
+            value={form.city}
+            onChange={(e) =>
+              dispatch({
+                action: "handleChange",
+                key: "city",
+                value: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="zipcode">Zipcode</label>
+          <input
+            required
+            name="zipcode"
+            id="zipcode"
+            type="number"
+            placeholder="What is your zipcode?"
+            value={form.zipcode}
+            onChange={(e) =>
+              dispatch({
+                action: "handleChange",
+                key: "zipcode",
+                value: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <button
+            className="secondary"
+            type="button"
+            onClick={() => dispatch({ action: "nextStep" })}
+          >
+            Next
+          </button>
+          <button
+            type="button"
+            className="link"
+            onClick={() => dispatch({ action: "previousStep" })}
+          >
+            Previous
+          </button>
         </div>
       </form>
-      {submitting && <p>Submitting...</p>}
-      {error && <p>{error}</p>}
-      {success && <p>Success!</p>}
-    </div>
-  );
+    );
+  } else if (form.step === 3) {
+    return (
+      <form onSubmit={handleSubmit}>
+        <h2>Confirm your information:</h2>
+        <div>
+          <label>Step {form.step} of 3</label>
+          <progress value={form.step} max={3} />
+        </div>
+        <table>
+          <tbody>
+            {Object.keys(form).map((key) => {
+              return (
+                <tr key={key}>
+                  <td>{key}</td>
+                  <td>{formData[key]}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div>
+          <button className="primary" type="submit">
+            Submit
+          </button>
+          <button type="button" className="link" onClick={handlePrevStep}>
+            Previous
+          </button>
+        </div>
+      </form>
+    );
+  } else {
+    return null;
+  }
 }
