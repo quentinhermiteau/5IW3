@@ -3,11 +3,14 @@
 import { useReducer } from "react";
 
 const initialFormData = {
-  name: "",
-  email: "",
-  address: "",
-  city: "",
-  zipcode: "",
+  fields: {
+    name: "",
+    email: "",
+    address: "",
+    city: "",
+    zipcode: "",
+  },
+  step: 1,
 };
 
 const reducer = (state, { action, key, value }) => {
@@ -17,7 +20,7 @@ const reducer = (state, { action, key, value }) => {
     case "previousStep":
       return { ...state, step: state.step - 1 };
     case "handleChange":
-      return { ...state, [key]: value };
+      return { ...state, fields: { ...state.fields, [key]: value } };
     default:
       alert("action not handled");
       break;
@@ -25,7 +28,7 @@ const reducer = (state, { action, key, value }) => {
 };
 
 export default function MultiStepForm() {
-  const [form, dispatch] = useReducer(reducer, { ...initialFormData, step: 1 });
+  const [form, dispatch] = useReducer(reducer, initialFormData);
 
   const handleSubmit = () => {
     alert("Thank you for your submission");
