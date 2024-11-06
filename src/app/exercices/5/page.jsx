@@ -5,6 +5,16 @@ import { useState } from "react";
 export default function App() {
   const [count, setCount] = useState(0);
 
+  console.log("render");
+
+  function increment(params) {
+    setCount(count + 1);
+  }
+
+  function decrement(params) {
+    setCount(count - 1);
+  }
+
   return (
     <main>
       <div id="notice">
@@ -12,10 +22,8 @@ export default function App() {
       </div>
       <span>{count}</span>
       <div>
-        <button onClick={() => (count > 0 ? setCount(count - 1) : null)}>
-          -
-        </button>
-        <button onClick={() => setCount(count + 1)}>+</button>
+        <button onClick={decrement}>-</button>
+        <button onClick={increment}>+</button>
       </div>
     </main>
   );
