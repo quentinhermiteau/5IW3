@@ -1,4 +1,10 @@
+import { themeContext } from "@/providers/ThemeProvider";
+import { useContext } from "react";
+
 function Link({ exercice }) {
+  const { theme } = useContext(themeContext);
+  console.log(theme);
+
   return (
     <li style={{ padding: "5px 0" }}>
       <a href={`/exercices/${exercice}`}>Exercice {exercice}</a>
@@ -34,6 +40,8 @@ export default function Navbar() {
     },
   ];
 
+  const { theme, setTheme } = useContext(themeContext);
+
   return (
     <div id="navbar">
       <h1>Exercices</h1>
@@ -47,6 +55,9 @@ export default function Navbar() {
           </div>
         ))}
       </ul>
+      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        {theme}
+      </button>
     </div>
   );
 }
