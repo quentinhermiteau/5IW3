@@ -20,7 +20,7 @@ function Handle({ handle }) {
   return <p>@{handle}</p>;
 }
 
-function Badge({ user, style, children, addFriend }) {
+function Badge({ style, addFriend, children, user }) {
   return (
     <div style={style}>
       <Avatar src={user.img} alt={user.name} />
@@ -28,7 +28,7 @@ function Badge({ user, style, children, addFriend }) {
         <Name name={user.name} />
         <Handle handle={user.handle} />
         {children}
-        <button onClick={addFriend}>Add Friend</button>
+        <button onClick={() => addFriend()}>Add Friend</button>
       </div>
     </div>
   );
