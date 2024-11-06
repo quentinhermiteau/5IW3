@@ -13,8 +13,12 @@ export default function Navbar() {
       exercices: [1, 2, 3],
     },
     {
+      name: "handleEvent",
+      exercices: [4],
+    },
+    {
       name: "useState",
-      exercices: [4, 5, 6, 7, 8],
+      exercices: [5, 6, 7, 8],
     },
     {
       name: "useContext",
