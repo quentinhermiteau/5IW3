@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const translations = {
   en: {
@@ -24,13 +24,31 @@ const translations = {
 const languageContext = createContext();
 
 function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState(null);
+
+  useEffect(() => {
+    let lang;
+    if (language === null) {
+      lang = localStorage.getItem("language") ?? "en";
+    } else {
+      lang = language;
+    }
+
+    setLanguage(lang);
+    localStorage.setItem("language", lang);
+  }, [language]);
 
   const changeLanguage = (lang) => setLanguage(lang);
 
   const translate = (key) => {
-    return translations[language][key];
+    return translations[language]
+      ? translations[language][key] ?? "Translation not found"
+      : "Language not found";
   };
+
+  if (language === null) {
+    return;
+  }
 
   return (
     <languageContext.Provider value={{ language, changeLanguage, translate }}>
