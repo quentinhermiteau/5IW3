@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 const initialFormData = {
   fields: {
@@ -28,7 +28,6 @@ const reducer = (state, { action, key, value }) => {
 
 export default function MultistepFormReducer() {
   const [form, dispatch] = useReducer(reducer, initialFormData);
-  const [formData, setFormData] = useState(initialFormData);
 
   const handleNextStep = () => dispatch({ action: "nextStep" });
 
